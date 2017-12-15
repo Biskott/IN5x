@@ -1,0 +1,7 @@
+﻿  TimeCount.cpp
+  OpencvTest2.cpp
+c:\users\flo\documents\visual studio 2017\projects\reconnaissance de caractère\opencvtest2\opencvtest2.cpp(161): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\reconnaissance de caractère\opencvtest2\opencvtest2.cpp(200): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\reconnaissance de caractère\opencvtest2\opencvtest2.cpp(203): warning C4244: 'argument' : conversion de 'double' en 'const int', perte possible de données
+  Génération de code en cours...
+  OpencvTest2.vcxproj -> C:\Users\Flo\Documents\Visual Studio 2017\Projects\Reconnaissance de caractère\x64\Debug\OpencvTest2.exe
