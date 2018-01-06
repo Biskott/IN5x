@@ -2,6 +2,20 @@
 #include "Training.h"
 #include "Directory.h"
 
+void read_directory(const string& name)
+{
+	string pattern(name);
+	pattern.append("\\*");
+	WIN32_FIND_DATA data;
+	HANDLE hFind;
+	if ((hFind = FindFirstFile(LPCWSTR(pattern.c_str()), &data)) != INVALID_HANDLE_VALUE) {
+		do {
+			cout << data.cFileName << endl;
+		} while (FindNextFile(hFind, &data) != 0);
+		FindClose(hFind);
+	}
+}
+
 /*
 * Training function for the KNN algorithm
 */
@@ -14,7 +28,8 @@ void training() {
 	map<int, set<int>> insideContoursTable;
 
 	// List all the training pictures in the directory
-	vector<string> trainingPicturesNames = getFile(TRAINING_PICTURES_PATH + "\\*.png");  //Directory::GetListFiles(TRAINING_PICTURES_PATH, "*.png", false);
+	//vector<string> trainingPicturesNames = getFile(TRAINING_PICTURES_PATH + "\\*.png");  //Directory::GetListFiles(TRAINING_PICTURES_PATH, "*.png", false);
+	vector<string> trainingPicturesNames = getFile2();
 
 	// Parse all pictures
 	for (string s : trainingPicturesNames) {

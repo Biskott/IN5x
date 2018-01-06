@@ -10,12 +10,6 @@
 #include "TimeCount.h" 
 #include "Directory.h"
 
-/*#include "opencv2/core/core.hpp"
-#include "opencv2/features2d/features2d.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/calib3d/calib3d.hpp"*/
-using namespace cv;
-
 // ------------------- HEADER ----------------------
 
 void CallBackFunc(int event, int x, int y, int flags, void *userdata);
@@ -30,6 +24,47 @@ void quickSort(Point2d tableau[], int debut, int fin);
 // ------------------- FUNCTIONS ----------------------
 
 int main(int argc, char *argv[])
+{
+	int startTime;
+
+	// Launch the training function
+	if (ASK_FOR_TRAINING_DEFAULT) {
+		startTime = getMilliCount();
+		cout << "--- Training started ---" << endl;
+		training();
+		cout << "--- Training finished (" << getMilliSpan(startTime) << " ms) ---" << endl << endl;
+	}
+
+	// Loading KNN xml
+	startTime = getMilliCount();
+	if (initKNN() == 0)
+		cout << "KNN database's xml loaded (" << getMilliSpan(startTime) << " ms)" << endl;
+
+	// Loading xml perimeter
+	if (USE_PERIMETER) {
+		startTime = getMilliCount();
+		if (loadPerimeterValues() == 0)
+			cout << "Perimeters' xml loaded (" << getMilliSpan(startTime) << " ms)" << endl;
+	}
+
+	// Loading xml inside contours
+	startTime = getMilliCount();
+	if (loadInsideContourValues() == 0)
+		cout << "Inside contours' xml loaded (" << getMilliSpan(startTime) << " ms)" << endl << endl;
+
+	// Main loop
+	cout << "--- Reconnaissance du chiffre choisi ---" << endl;
+
+	Mat pictureToFind = imread(("TrainingPictures_whiteDisk\\13_picture.png"));
+
+	startTime = getMilliCount();
+	int getNumberValue = getNumberInPicture(pictureToFind);
+	cout << "Number read with full function : " << getNumberValue << " (" << getMilliSpan(startTime) << " ms)" << endl;
+
+	return 0;
+}
+
+/*int oldMain(int argc, char *argv[])
 {
 	int startTime;
 	bool askForTraining = ASK_FOR_TRAINING_DEFAULT;
@@ -73,7 +108,7 @@ int main(int argc, char *argv[])
 
 	while (true) {
 		cout << endl;
-		int ACTUAL_CAMERA_ID = 1;
+		int ACTUAL_CAMERA_ID = 0;
 		Mat image;
 		char key = 'q';
 		while (key != ' ' && key != 27 && key !=8 && key != 'a' && key != 't' && key != 'y' && key != 's') {
@@ -126,7 +161,7 @@ int main(int argc, char *argv[])
 	
 
     return 0;
-}
+}*/
 
 void CallBackFunc(int event, int x, int y, int flags, void *userdata) {
 

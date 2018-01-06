@@ -112,7 +112,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 	}
 	else {
 		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, img_src, thresholdValue);
-		imshow("left", leftPicture.image);
+		//imshow("left", leftPicture.image);
 	}
 	// Set right picture
 	if (rightArea == 0) {
@@ -121,7 +121,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 	}
 	else {
 		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, img_src, thresholdValue);
-		imshow("right", rightPicture.image);
+		//imshow("right", rightPicture.image);
 	}
 }
 

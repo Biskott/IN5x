@@ -52,6 +52,7 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 	CvMat classification = ClassificationInts;
 
 	Ptr<ml::KNearest> kNearest(ml::KNearest::create());
+	//kNearest->setDefaultK(10);
 	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);
 
 	//CvKNearest knn(&training, &classification, 0, false, KNN_K_PARAMETER);
@@ -72,7 +73,7 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 	//CvMat test = pictureFloat;
 	//CvMat *dist = cvCreateMat(1, KNN_K_PARAMETER, CV_32FC1);
 	//float fitCurrentChar = knn.find_nearest(&test, KNN_K_PARAMETER, 0, 0, nearests, dist);
-
+	cout << dist.size() << " " << nearest.size() << endl;
 	vector<Point2i> range;
 	for (int i = 0; i < KNN_K_PARAMETER; ++i) {
 		int percent = (MAX_KNN_VALUE - (float)dist.at<float>(0, i)) / MAX_KNN_VALUE * 100;

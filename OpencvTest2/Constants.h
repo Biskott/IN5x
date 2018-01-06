@@ -16,11 +16,11 @@ const int RESIZED_IMAGE_HEIGHT = 60;
 const int THRESHOLD_VALUE = 140;
 
 // Constant to set if the program made a new training 
-const bool ASK_FOR_TRAINING_DEFAULT = false;
+const bool ASK_FOR_TRAINING_DEFAULT = true;
 
 // Constant path
 const string XML_PATH = "xml";
-const string TRAINING_PICTURES_PATH = "TrainingPictures_blackMovement";
+const string TRAINING_PICTURES_PATH = "TrainingPictures_whiteDisk";
 
 // Constant filename
 const string XML_PERIMETER_FILE_NAME = "perimeters.xml";
@@ -42,7 +42,7 @@ const int SEARCH_AREA_BOTTOM = 65;
 const int KNN_K_PARAMETER = 10;
 
 // Constant to use picture inversion
-const bool INVERSE_PICTURE = false;
+const bool INVERSE_PICTURE = true;
 
 // Constant max value for percentage correspondance in KNN
 const float MAX_KNN_VALUE = 4.6818E+8;

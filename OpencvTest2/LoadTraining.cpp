@@ -115,4 +115,5 @@ int initKNN() {
 	}
 	if (fileEmpty)
 		return -3;
+	return 0;
 }
