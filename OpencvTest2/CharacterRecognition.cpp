@@ -52,7 +52,7 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 	CvMat classification = ClassificationInts;
 
 	Ptr<ml::KNearest> kNearest(ml::KNearest::create());
-	//kNearest->setDefaultK(10);
+	kNearest->setDefaultK(KNN_K_PARAMETER);
 	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);
 
 	//CvKNearest knn(&training, &classification, 0, false, KNN_K_PARAMETER);
@@ -60,12 +60,12 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 
 	if (pictureToCompare.empty())
 		return vector<Point2i>();
-
+	
 	Mat pictureFloat;
 	resize(pictureToCompare, pictureToCompare, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));
 	pictureToCompare.convertTo(pictureFloat, CV_32FC1);
 	pictureFloat = pictureFloat.reshape(1, 1);
-
+	
 	Mat nearest(0, 0, CV_32F);
 	Mat dist(0, 0, CV_32F);
 	kNearest->findNearest(pictureFloat, KNN_K_PARAMETER, nearest, noArray(), dist);
@@ -161,10 +161,10 @@ vector<int> getAuthorizedNumbers(int insideContourNumber) {
 int getNumberInPicture(Mat pictureToCompare) {
 
 	Picture leftPicture, rightPicture;
-
+	
 	pictureToPolygons(pictureToCompare, leftPicture, rightPicture, THRESHOLD_VALUE);
 	Point2i valueLeft, valueRight;
-
+	
 	vector<Point2i> knnLeft = KNNRange(leftPicture.image), knnRight = KNNRange(rightPicture.image);
 
 	vector<int> rangePerimeterListLeft, rangePerimeterListRight;

@@ -2,20 +2,6 @@
 #include "Training.h"
 #include "Directory.h"
 
-void read_directory(const string& name)
-{
-	string pattern(name);
-	pattern.append("\\*");
-	WIN32_FIND_DATA data;
-	HANDLE hFind;
-	if ((hFind = FindFirstFile(LPCWSTR(pattern.c_str()), &data)) != INVALID_HANDLE_VALUE) {
-		do {
-			cout << data.cFileName << endl;
-		} while (FindNextFile(hFind, &data) != 0);
-		FindClose(hFind);
-	}
-}
-
 /*
 * Training function for the KNN algorithm
 */

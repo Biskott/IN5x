@@ -55,12 +55,13 @@ int main(int argc, char *argv[])
 	// Main loop
 	cout << "--- Reconnaissance du chiffre choisi ---" << endl;
 
-	Mat pictureToFind = imread(("TrainingPictures_whiteDisk\\13_picture.png"));
+	Mat pictureToFind = imread(("TrainingPictures2\\22_picture.png"));
 
 	startTime = getMilliCount();
 	int getNumberValue = getNumberInPicture(pictureToFind);
 	cout << "Number read with full function : " << getNumberValue << " (" << getMilliSpan(startTime) << " ms)" << endl;
 
+	while(true){}
 	return 0;
 }
 

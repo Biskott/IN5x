@@ -3,4 +3,30 @@ c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\chara
 c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\characterrecognition.cpp(80): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
 c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\characterrecognition.cpp(136): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
 c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\characterrecognition.cpp(141): warning C4244: 'argument' : conversion de 'double' en 'const int', perte possible de données
+  Génération de code en cours...
+  Compilation en cours...
+  Training.cpp
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\training.cpp(24): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+  TimeCount.cpp
+  PictureModification.cpp
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(74): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(85): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(165): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(242): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+  OpencvTest2.cpp
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\opencvtest2.cpp(197): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\opencvtest2.cpp(236): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\opencvtest2.cpp(239): warning C4244: 'argument' : conversion de 'double' en 'const int', perte possible de données
+  LoadTraining.cpp
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\loadtraining.cpp(65): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+  Directory.cpp
+c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\directory.cpp(16): warning C4477: 'printf' : la chaîne de format '%s' nécessite un argument de type 'char *', mais l'argument variadique 1 est de type 'WCHAR *'
+  c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\directory.cpp(16): note: utilisez '%ls' dans la chaîne de format
+  c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\directory.cpp(16): note: utilisez '%lls' dans la chaîne de format
+  c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\directory.cpp(16): note: utilisez '%Ls' dans la chaîne de format
+  c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\directory.cpp(16): note: utilisez '%ws' dans la chaîne de format
+  Camera.cpp
+  Array.cpp
+  Angle.cpp
+  Génération de code en cours...
   OpencvTest2.vcxproj -> C:\Users\Flo\Documents\Visual Studio 2017\Projects\OpencvTest2\x64\Debug\OpencvTest2.exe

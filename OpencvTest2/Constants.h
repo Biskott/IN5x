@@ -13,7 +13,7 @@ const int RESIZED_IMAGE_WIDTH = 40;
 const int RESIZED_IMAGE_HEIGHT = 60;
 
 // Constant threshold for picture manipulation
-const int THRESHOLD_VALUE = 140;
+const int THRESHOLD_VALUE = 190;
 
 // Constant to set if the program made a new training 
 const bool ASK_FOR_TRAINING_DEFAULT = true;
@@ -39,7 +39,7 @@ const int SEARCH_AREA_TOP = 30;
 const int SEARCH_AREA_BOTTOM = 65;
 
 // K parameter for KNN range algorithm : nb of nearest matches in range
-const int KNN_K_PARAMETER = 10;
+const int KNN_K_PARAMETER = 1;
 
 // Constant to use picture inversion
 const bool INVERSE_PICTURE = true;
