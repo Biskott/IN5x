@@ -5,3 +5,9 @@ packages/*
 OpencvTest2/x64/*
 ipch/*
 OpencvTest2/test/*
+*.db
+*.obj
+*.idb
+*.pdb
+*.sln
+.vs/*
