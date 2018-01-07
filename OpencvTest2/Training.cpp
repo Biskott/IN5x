@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Training.h"
-#include "Directory.h"
 
 /*
 * Training function for the KNN algorithm

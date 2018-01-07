@@ -23,24 +23,3 @@ Mat takePicture(int cameraId) {
 	}
 	return picture;
 }
-
-void takeTrainingPicture(int cameraId) {
-
-	char key = 'q';
-	Mat image;
-
-	while (key != 27) {
-		image = takePicture(cameraId);
-		setDefaultSearchingArea(image);
-		imshow("Image prise", image);
-		key = waitKey(10);
-
-		if (key == 'w') {
-			cout << "Number : ";
-			string value;
-			cin >> value;
-			imwrite(TRAINING_PICTURES_PATH + "\\" + value + "_picture" + ".png", image);
-			key = 'q';
-		}
-	}
-}

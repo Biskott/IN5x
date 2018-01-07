@@ -2,41 +2,6 @@
 #include "PictureModification.h"
 
 /*
-* Function to set the default searching area
-*/
-void setDefaultSearchingArea(Mat &img_src) {
-
-	// Conversion in IplImage in order to use ROI
-	IplImage *frame = new IplImage(img_src);
-
-	// Calcul dimensions thanks to the percentage parameters
-	int x = img_src.size().width*SEARCH_AREA_LEFT / 100;
-	int y = img_src.size().height*SEARCH_AREA_TOP / 100;
-	int width = img_src.size().width*SEARCH_AREA_RIGHT / 100 - x;
-	int height = img_src.size().height*SEARCH_AREA_BOTTOM / 100 - y;
-
-	// Set the new searching area
-	cvSetImageROI(frame, cvRect(x, y, width, height));
-	img_src = (cvarrToMat(frame).clone());
-	cvResetImageROI(frame);
-}
-
-/*
-* Function to set the searching area thanks to two opposate point of a rectangle
-*/
-void setSearchingArea(Mat &img_src, Point a, Point b) {
-
-	if (a.x < b.x && a.y < b.y)
-		cropPicture(img_src, cvRect(a.x, a.y, b.x - a.x, b.y - a.y));
-	else if (a.x > b.x && a.y > b.y)
-		cropPicture(img_src, cvRect(b.x, b.y, a.x - b.x, a.y - b.y));
-	else if (a.x < b.x && a.y > b.y)
-		cropPicture(img_src, cvRect(a.x, b.y, b.x - a.x, a.y - b.y));
-	else if (a.x > b.x && a.y < b.y)
-		cropPicture(img_src, cvRect(b.x, a.y, a.x - b.x, b.y - a.y));
-}
-
-/*
 * Function to get the contour of the one or two polygons present in the picture
 */
 void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture, int thresholdValue) {

@@ -5,4 +5,3 @@
 
 // Take pictures
 Mat takePicture(int cameraId);
-void takeTrainingPicture(int cameraId);

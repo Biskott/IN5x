@@ -3,6 +3,8 @@
 #include "Include.h"
 #include "Constants.h"
 #include "PictureModification.h"
+#include "Directory.h"
+
 
 // Training
 void training();

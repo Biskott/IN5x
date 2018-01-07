@@ -13,4 +13,4 @@ Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> perimeterRange,
 bool getPerimeterRange(Mat pictureToCompare, vector<int> &perimeterRange);
 
 // Main function
-int getNumberInPicture(Mat pictureToCompare);
+int getNumberInPicture(Mat pictureToCompare, float &percentage);

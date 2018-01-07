@@ -73,13 +73,12 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 	//CvMat test = pictureFloat;
 	//CvMat *dist = cvCreateMat(1, KNN_K_PARAMETER, CV_32FC1);
 	//float fitCurrentChar = knn.find_nearest(&test, KNN_K_PARAMETER, 0, 0, nearests, dist);
-	cout << dist.size() << " " << nearest.size() << endl;
+	
 	vector<Point2i> range;
 	for (int i = 0; i < KNN_K_PARAMETER; ++i) {
 		int percent = (MAX_KNN_VALUE - (float)dist.at<float>(0, i)) / MAX_KNN_VALUE * 100;
 		range.push_back(Point2i((float)nearest.at<float>(0, i), percent));
 	}
-
 	return range;
 }
 
@@ -158,7 +157,7 @@ vector<int> getAuthorizedNumbers(int insideContourNumber) {
 /*
 * Function to find a number (with one or two digits) in a picture
 */
-int getNumberInPicture(Mat pictureToCompare) {
+int getNumberInPicture(Mat pictureToCompare, float &percentage) {
 
 	Picture leftPicture, rightPicture;
 	
@@ -181,14 +180,20 @@ int getNumberInPicture(Mat pictureToCompare) {
 		return -1;
 	}
 	else {
+		percentage = -1;
 		string result = "";
 		if (valueLeft.x >= 0) {
 			result += (valueLeft.x + 48);
+			percentage = valueLeft.y;
 			cout << "Left number percentage correspondance : " << valueLeft.y << "%" << endl;
 		}
 		if (valueRight.x >= 0) {
 			result += (valueRight.x + 48);
 			cout << "Right number percentage correspondance : " << valueRight.y << "%" << endl;
+			if (percentage != -1)
+				percentage = (percentage + float(valueRight.y)) / 2;
+			else
+				percentage = valueRight.y;
 		}
 		return stoi(result);
 	}
