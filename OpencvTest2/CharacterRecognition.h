@@ -9,8 +9,7 @@
 int applyKNN(Mat pictureToCompare);
 vector<Point2i> KNNRange(Mat pictureToCompare);
 vector<int> getAuthorizedNumbers(int insideContourNumber);
-Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> perimeterRange, vector<int> authorizedNumber);
-bool getPerimeterRange(Mat pictureToCompare, vector<int> &perimeterRange);
+Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> authorizedNumber);
 
 // Main function
 int getNumberInPicture(Mat pictureToCompare, float &percentage);

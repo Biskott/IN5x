@@ -15,14 +15,8 @@ map<int, vector<int>> insideContourTable;
 */
 int applyKNN(Mat pictureToCompare) {
 
-	//CvMat training = TrainingImagesAsFlattenedFloats;											// NEW opencv 2.4
-	//CvMat classification = ClassificationInts;													// NEW opencv 2.4
-
-	Ptr<ml::KNearest> kNearest(ml::KNearest::create());										// OLD opencv 3.1
-	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);		// OLD opencv 3.1
-	//int K = 1;																					// NEW opencv 2.4
-	//CvKNearest knn(&training, &classification, 0, false, K);									// NEW opencv 2.4
-	//CvMat* nearests = cvCreateMat(1, K, CV_32FC1);												// NEW opencv 2.4
+	Ptr<ml::KNearest> kNearest(ml::KNearest::create());
+	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);
 
 	if (pictureToCompare.empty())
 		return -3;
@@ -34,11 +28,9 @@ int applyKNN(Mat pictureToCompare) {
 
 	Mat currentChar(0, 0, CV_32F);
 
-	kNearest->findNearest(pictureFloat, 1, currentChar);										// OLD opencv 3.1
-	//CvMat test = pictureFloat;																	// NEW opencv 2.4
-	//float fitCurrentChar = knn.find_nearest(&test, K, 0, 0, nearests, 0);						// NEW opencv 2.4
+	kNearest->findNearest(pictureFloat, 1, currentChar);
 
-	float fitCurrentChar = (float)currentChar.at<float>(0, 0);								// OLD opencv 3.1
+	float fitCurrentChar = (float)currentChar.at<float>(0, 0);
 
 	return int(fitCurrentChar);
 }
@@ -48,15 +40,12 @@ int applyKNN(Mat pictureToCompare) {
 */
 vector<Point2i> KNNRange(Mat pictureToCompare) {
 
-	CvMat training = TrainingImagesAsFlattenedFloats;
-	CvMat classification = ClassificationInts;
+	Mat training = TrainingImagesAsFlattenedFloats;
+	Mat classification = ClassificationInts;
 
 	Ptr<ml::KNearest> kNearest(ml::KNearest::create());
 	kNearest->setDefaultK(KNN_K_PARAMETER);
 	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);
-
-	//CvKNearest knn(&training, &classification, 0, false, KNN_K_PARAMETER);
-	//CvMat* nearests = cvCreateMat(1, KNN_K_PARAMETER, CV_32FC1);
 
 	if (pictureToCompare.empty())
 		return vector<Point2i>();
@@ -69,10 +58,6 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 	Mat nearest(0, 0, CV_32F);
 	Mat dist(0, 0, CV_32F);
 	kNearest->findNearest(pictureFloat, KNN_K_PARAMETER, nearest, noArray(), dist);
-
-	//CvMat test = pictureFloat;
-	//CvMat *dist = cvCreateMat(1, KNN_K_PARAMETER, CV_32FC1);
-	//float fitCurrentChar = knn.find_nearest(&test, KNN_K_PARAMETER, 0, 0, nearests, dist);
 	
 	vector<Point2i> range;
 	for (int i = 0; i < KNN_K_PARAMETER; ++i) {
@@ -83,9 +68,9 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 }
 
 /*
-* Function to get the best best number found
+* Function to get the best number found
 */
-Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> perimeterRange, vector<int> authorizedNumber) {
+Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> authorizedNumber) {
 
 	for (Point2i knnValue : knnRange) {
 
@@ -118,10 +103,8 @@ int getNumberInPicture(Mat pictureToCompare, float &percentage) {
 	
 	vector<Point2i> knnLeft = KNNRange(leftPicture.image), knnRight = KNNRange(rightPicture.image);
 
-	vector<int> rangePerimeterListLeft, rangePerimeterListRight;
-
-	valueLeft = averageNumberFound(knnLeft, rangePerimeterListLeft, getAuthorizedNumbers(leftPicture.insideContourNumber));
-	valueRight = averageNumberFound(knnRight, rangePerimeterListRight, getAuthorizedNumbers(rightPicture.insideContourNumber));
+	valueLeft = averageNumberFound(knnLeft, getAuthorizedNumbers(leftPicture.insideContourNumber));
+	valueRight = averageNumberFound(knnRight, getAuthorizedNumbers(rightPicture.insideContourNumber));
 
 	if (valueLeft.x < 0 && valueRight.x < 0) {
 		return -1;

@@ -5,5 +5,4 @@
 
 // Load training
 int loadInsideContourValues();
-int loadPerimeterValues();
 int initKNN();

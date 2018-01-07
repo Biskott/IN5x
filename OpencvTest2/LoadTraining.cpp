@@ -41,44 +41,6 @@ int loadInsideContourValues() {
 }
 
 /*
-* Function to load perimeter values from xml file
-*/
-int loadPerimeterValues() {
-
-	// File which contain the classification of numbers
-	FileStorage fsPerimeterDatas(XML_PATH + "\\" + XML_PERIMETER_FILE_NAME, FileStorage::READ);
-
-	if (!fsPerimeterDatas.isOpened()) {
-		cout << "Error, unable to open training perimeter file..." << endl;
-		return -1;
-	}
-	perimeterDatas = vector<Point2d>();
-
-	int i = 0;
-	string value = "Init";
-	stringstream tag;
-	while (!value.empty())
-	{
-		tag << "perimeter" << i;
-		fsPerimeterDatas[tag.str()] >> value;
-
-		int Index = value.find(':');
-		if (!value.empty())
-			perimeterDatas.push_back(Point2d(stod(value.substr(0, Index)), stod(value.substr(Index + 1, value.size() - Index - 1))));
-
-		tag = stringstream();
-		++i;
-	}
-	fsPerimeterDatas.release();
-
-	if (i == 1) {
-		cout << "Error, no datas in perimeter file..." << endl;
-		return -2;
-	}
-	return 0;
-}
-
-/*
 * Function to init KNN algorithm (load xml training files)
 */
 int initKNN() {

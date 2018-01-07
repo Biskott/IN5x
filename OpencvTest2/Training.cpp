@@ -80,28 +80,6 @@ bool saveXmlContourNumbers(map<int, set<int>> insideContourTable) {
 }
 
 /*
-* Function to save xml training files for perimeter range
-*/
-bool saveXmlPerimeter(vector<Point2d> perimeterDatas) {
-
-	FileStorage fsPerimeterDatas(XML_PATH + "\\" + XML_PERIMETER_FILE_NAME, FileStorage::WRITE);
-
-	if (fsPerimeterDatas.isOpened()) {
-		for (int i = 0; i < perimeterDatas.size(); ++i) {
-			stringstream data, tag;
-			tag << "perimeter" << i;
-			data << perimeterDatas[i].x << ":" << perimeterDatas[i].y;
-			fsPerimeterDatas << tag.str() << data.str();
-		}
-		fsPerimeterDatas.release();
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-/*
 * Function to save xml training files for KNN algorithm
 */
 bool saveXmlTraining(vector<int> classificationIntsTab, Mat trainingImagesAsFlattened) {

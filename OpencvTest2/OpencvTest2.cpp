@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	}
 	averagePercentage /= filenames.size();
 	cout << "Average percentage detected : " << averagePercentage << endl;
-
+	
 	while(true){} // Temporaire : pour laisser afficher la console
 	return 0;
 }
