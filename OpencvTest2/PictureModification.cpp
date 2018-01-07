@@ -12,17 +12,17 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 	cvtColor(img_src, bw, CV_BGR2GRAY);
 
 	// Do we want black pixels on white background or the opposite ?
-	int TotalNumberOfPixels = bw.rows * bw.cols;
-	int ZeroPixels = TotalNumberOfPixels - countNonZero(bw);
-	if (ZeroPixels < TotalNumberOfPixels/2) {
-		bw = inverseColor(bw);
-	}
-	Mat thresh;
 
+	Mat thresh;
 	blur(bw, bw, Size(3, 3));
 	// blur(bw, bw, Size(3, 3));
 
 	threshold(bw, bw, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+	int TotalNumberOfPixels = bw.rows * bw.cols;
+	int ZeroPixels = TotalNumberOfPixels - countNonZero(bw);
+	if (ZeroPixels < TotalNumberOfPixels / 2) {
+		bw = inverseColor(bw);
+	}
 	int dil_size = 3;
 	Mat element = getStructuringElement(MORPH_CROSS,
 		Size(2 * dil_size + 1, 2 * dil_size + 1),
