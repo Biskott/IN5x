@@ -15,37 +15,33 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 
 	Mat thresh;
 	blur(bw, bw, Size(3, 3));
-	// blur(bw, bw, Size(3, 3));
-
 	threshold(bw, bw, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+	
 	int TotalNumberOfPixels = bw.rows * bw.cols;
 	int ZeroPixels = TotalNumberOfPixels - countNonZero(bw);
 	if (ZeroPixels < TotalNumberOfPixels / 2) {
 		bw = inverseColor(bw);
 	}
+
 	int dil_size = 3;
-	Mat element = getStructuringElement(MORPH_CROSS,
+	Mat element = getStructuringElement(MORPH_RECT,
 		Size(2 * dil_size + 1, 2 * dil_size + 1),
 		Point(0, 0));
 
-	//Mat dil;
-	//dilate(bw, dil, element);
-	//
-	//Mat er;
-	//erode(bw, er, element);
-
-	//Mat diler;
-	//erode(dil, diler, element);
-
 	Mat close;
 	morphologyEx(bw, close, MORPH_CLOSE, element);
+	Mat dil;
+	dilate(bw, dil, element);
+	Mat dil2;
+	Mat element2 = getStructuringElement(MORPH_ELLIPSE,
+		Size(2 * dil_size + 1, 2 * dil_size + 1),
+		Point(0, 0));
 
-
-
+	dilate(dil, dil2, element2);
 	// Search for the different polygons in picture
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
-	findContours(close, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	findContours(dil2, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	// Select the two biggest area
 	int largestArea = 0, largestAreaIndex = 0, secondLargestArea = 0, secondLargestAreaIndex = 0;
