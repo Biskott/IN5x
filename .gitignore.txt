@@ -1,7 +1,0 @@
-OpencvTest2.VC
-OpencvTest2.exe
-x64/*
-packages/*
-OpencvTest2/x64/*
-ipch/*
-OpencvTest2/test/*

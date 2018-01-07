@@ -20,18 +20,29 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 	// blur(img_temp, img_temp, Size(3, 3));
 
 	threshold(img_temp, img_temp, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-	int dil_size = 2;
-	Mat element = getStructuringElement(MORPH_RECT,
+	int dil_size = 3;
+	Mat element = getStructuringElement(MORPH_CROSS,
 		Size(2 * dil_size + 1, 2 * dil_size + 1),
-		Point(dil_size, dil_size));
+		Point(0, 0));
 
-	Mat dil;
-	dilate(img_temp, dil, element);
+	//Mat dil;
+	//dilate(img_temp, dil, element);
+	//
+	//Mat er;
+	//erode(img_temp, er, element);
+
+	//Mat diler;
+	//erode(dil, diler, element);
+
+	Mat close;
+	morphologyEx(img_temp, close, MORPH_CLOSE, element);
+
+
 
 	// Search for the different polygons in picture
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
-	findContours(dil, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	findContours(close, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	// Select the two biggest area
 	int largestArea = 0, largestAreaIndex = 0, secondLargestArea = 0, secondLargestAreaIndex = 0;

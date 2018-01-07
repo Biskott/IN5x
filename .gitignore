@@ -12,11 +12,8 @@ OpencvTest2/test/*
 *.sln
 .vs/*
 *.vcxproj
-
 *.log
-
 *.pch
-
 *.tlog
-
 *.lastbuildstate
+enc_temp_folder/*
