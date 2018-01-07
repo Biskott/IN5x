@@ -90,58 +90,10 @@ Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> perimeterRange,
 	for (Point2i knnValue : knnRange) {
 
 		if (vectorContains(authorizedNumber, knnValue.x)) {
-
-			if (USE_PERIMETER) {
-
-				for (int perimeterValue : perimeterRange) {
-					if (knnValue.x == perimeterValue)
-						return knnValue;
-				}
-			}
-			else {
-				return knnValue;
-			}
+			return knnValue;
 		}
 	}
 	return Point2i(-1,0);
-}
-
-/*
-* Function to get range perimeter
-*/
-bool getPerimeterRange(Mat pictureToCompare, vector<int> &perimeterRange) {
-
-	if (!pictureToCompare.empty()) {
-
-		vector<Point2d> perimeterScore;
-
-		double actualPerimeter;
-		if (PERIMETER_RESIZE) {
-			vector<Point> resizePerimeter = getLargestContour(pictureToCompare);
-			resizePoints(resizePerimeter, pictureToCompare.rows, pictureToCompare.cols, RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT);
-			actualPerimeter = arcLength(resizePerimeter, true);
-		}
-		else {
-			actualPerimeter = arcLength(getLargestContour(pictureToCompare), true);
-		}
-
-		for (int i = 0; i < perimeterDatas.size(); ++i) {
-
-			perimeterScore.push_back(Point2d(perimeterDatas[i].x, abs(perimeterDatas[i].y - actualPerimeter)));
-		}
-
-		perimeterRange = vector<int>();
-
-		sortTabByY(perimeterScore.data(), 0, perimeterScore.size() - 1);
-
-		for (int i = 0; i < perimeterScore.size(); ++i) {
-			if (perimeterScore[i].y > PERIMETER_TOLERANCE)
-				break;
-			perimeterRange.push_back(perimeterScore[i].x);
-		}
-		return true;
-	}
-	return false;
 }
 
 /*
@@ -167,11 +119,6 @@ int getNumberInPicture(Mat pictureToCompare, float &percentage) {
 	vector<Point2i> knnLeft = KNNRange(leftPicture.image), knnRight = KNNRange(rightPicture.image);
 
 	vector<int> rangePerimeterListLeft, rangePerimeterListRight;
-
-	if (USE_PERIMETER) {
-		getPerimeterRange(leftPicture.image, rangePerimeterListLeft);
-		getPerimeterRange(rightPicture.image, rangePerimeterListRight);
-	}
 
 	valueLeft = averageNumberFound(knnLeft, rangePerimeterListLeft, getAuthorizedNumbers(leftPicture.insideContourNumber));
 	valueRight = averageNumberFound(knnRight, rangePerimeterListRight, getAuthorizedNumbers(rightPicture.insideContourNumber));

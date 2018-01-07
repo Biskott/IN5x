@@ -41,13 +41,5 @@ const int SEARCH_AREA_BOTTOM = 65;
 // K parameter for KNN range algorithm : nb of nearest matches in range
 const int KNN_K_PARAMETER = 1;
 
-// Constant to use picture inversion
-const bool INVERSE_PICTURE = true;
-
 // Constant max value for percentage correspondance in KNN
 const float MAX_KNN_VALUE = 4.6818E+8;
-
-// Constant for perimeter tolerance and resize
-const bool USE_PERIMETER = true;
-const int PERIMETER_TOLERANCE = 50;
-const bool PERIMETER_RESIZE = true;

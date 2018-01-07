@@ -132,17 +132,6 @@ Picture getPolygon(vector<vector<Point>> contours, int areaIndex, vector<Vec4i> 
 
 	// Get straight polygon (a biggest picture to not lose parts of original picture)
 	Mat straightPicture = getStraightPolygon(img_src, boundRect, contours[areaIndex], areaIndex);
-	// Picture manipulation on new picture
-	//cvtColor(straightPicture, straightPicture, CV_BGR2GRAY);
-	//if (INVERSE_PICTURE)
-	//	straightPicture = inverseColor(straightPicture);
-
-
-
-	//blur(straightPicture, straightPicture, Size(3, 3));
-	//threshold(straightPicture, straightPicture, thresholdValue, 255, THRESH_BINARY);
-	// Threshold determined with otsu's method
-	//threshold(straightPicture, straightPicture, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
 	// Find contour with the new picture
 	vector<vector<Point>> contours_straight;
@@ -207,14 +196,6 @@ Mat getStraightPolygon(Mat img_src, Rect pictureBoundRect, vector<Point> picture
 
 	warpAffine(img_res, img_res, rotMat, img_res.size(), INTER_CUBIC);
 
-	//Crop again around number
-	/*vector<vector<Point> > contours;
-	vector<Vec4i> hierarchy;
-	findContours(img_res, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-	vector<vector<Point>> contours_poly(contours.size());
-	approxPolyDP(Mat(contours[areaIndex]), contours_poly[areaIndex], 3, true);
-	Rect boundRect = boundingRect(Mat(contours_poly[areaIndex]));
-	cropPicture(img_res, boundRect);*/
 	return img_res;
 }
 

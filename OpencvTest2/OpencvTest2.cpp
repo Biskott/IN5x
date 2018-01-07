@@ -29,13 +29,6 @@ int main(int argc, char *argv[])
 	if (initKNN() == 0)
 		cout << "KNN database's xml loaded (" << getMilliSpan(startTime) << " ms)" << endl;
 
-	// Loading xml perimeter
-	if (USE_PERIMETER) {
-		startTime = getMilliCount();
-		if (loadPerimeterValues() == 0)
-			cout << "Perimeters' xml loaded (" << getMilliSpan(startTime) << " ms)" << endl;
-	}
-
 	// Loading xml inside contours
 	startTime = getMilliCount();
 	if (loadInsideContourValues() == 0)

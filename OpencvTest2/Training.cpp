@@ -46,10 +46,6 @@ void training() {
 	if (saveXmlTraining(classificationIntsTab, trainingImagesAsFlattened))
 		cout << "Training xml files for KNN saved succesfully." << endl;
 
-	// Save the xml perimeters file
-	if (saveXmlPerimeter(perimeterDatas) && USE_PERIMETER) {
-		cout << "Training xml file for perimeter range saved succesfully" << endl;
-	}
 	// Save the xml inside contour numbers file
 	if (saveXmlContourNumbers(insideContoursTable)) {
 		cout << "Training xml file for contour's numbers saved succesfully" << endl;
@@ -146,18 +142,6 @@ void setInDataBase(int value, Picture numberPicture, vector<int> &classification
 	// Resize matrix for perimeter and KNN calculation
 	Mat imageResized, imageFloat;
 	resize(numberPicture.image, imageResized, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));
-
-	// Perimeter
-	if (USE_PERIMETER) {
-		if (PERIMETER_RESIZE) {
-			vector<Point> resizePerimeter = getLargestContour(numberPicture.image);
-			resizePoints(resizePerimeter, numberPicture.image.rows, numberPicture.image.cols, RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT);
-			perimeterDatas.push_back(Point2d(value, arcLength(resizePerimeter, true)));
-		}
-		else {
-			perimeterDatas.push_back(Point2d(value, arcLength(getLargestContour(numberPicture.image), true)));
-		}
-	}
 
 	// KNN
 	imageResized.convertTo(imageFloat, CV_32FC1);
