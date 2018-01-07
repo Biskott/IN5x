@@ -6,36 +6,39 @@
 */
 void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture, int thresholdValue) {
 
-	Mat img_temp;
+	Mat bw;
 
 	// Picture manipulation
-	cvtColor(img_src, img_temp, CV_BGR2GRAY);
+	cvtColor(img_src, bw, CV_BGR2GRAY);
 
 	// Do we want black pixels on white background or the opposite ?
-	if (INVERSE_PICTURE)
-		img_temp = inverseColor(img_temp);
+	int TotalNumberOfPixels = bw.rows * bw.cols;
+	int ZeroPixels = TotalNumberOfPixels - countNonZero(bw);
+	if (ZeroPixels < TotalNumberOfPixels/2) {
+		bw = inverseColor(bw);
+	}
 	Mat thresh;
 
-	blur(img_temp, img_temp, Size(3, 3));
-	// blur(img_temp, img_temp, Size(3, 3));
+	blur(bw, bw, Size(3, 3));
+	// blur(bw, bw, Size(3, 3));
 
-	threshold(img_temp, img_temp, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+	threshold(bw, bw, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 	int dil_size = 3;
 	Mat element = getStructuringElement(MORPH_CROSS,
 		Size(2 * dil_size + 1, 2 * dil_size + 1),
 		Point(0, 0));
 
 	//Mat dil;
-	//dilate(img_temp, dil, element);
+	//dilate(bw, dil, element);
 	//
 	//Mat er;
-	//erode(img_temp, er, element);
+	//erode(bw, er, element);
 
 	//Mat diler;
 	//erode(dil, diler, element);
 
 	Mat close;
-	morphologyEx(img_temp, close, MORPH_CLOSE, element);
+	morphologyEx(bw, close, MORPH_CLOSE, element);
 
 
 
@@ -100,7 +103,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		leftPicture.insideContourNumber = 0;
 	}
 	else {
-		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, img_temp, thresholdValue);
+		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, bw, thresholdValue);
 		//imshow("left", leftPicture.image);
 	}
 	// Set right picture
@@ -109,7 +112,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		rightPicture.insideContourNumber = 0;
 	}
 	else {
-		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, img_temp, thresholdValue);
+		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, bw, thresholdValue);
 		//imshow("right", rightPicture.image);
 	}
 }
