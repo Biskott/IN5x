@@ -11,3 +11,12 @@ OpencvTest2/test/*
 *.pdb
 *.sln
 .vs/*
+*.vcxproj
+
+*.log
+
+*.pch
+
+*.tlog
+
+*.lastbuildstate

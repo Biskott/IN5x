@@ -1,6 +1,0 @@
-﻿  PictureModification.cpp
-c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(39): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(50): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(130): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-c:\users\flo\documents\visual studio 2017\projects\opencvtest2\opencvtest2\picturemodification.cpp(207): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-  OpencvTest2.vcxproj -> C:\Users\Flo\Documents\Visual Studio 2017\Projects\OpencvTest2\x64\Debug\OpencvTest2.exe
