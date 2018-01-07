@@ -8,7 +8,7 @@
 void setDefaultSearchingArea(Mat &img_src);
 void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture, int thresholdValue);
 Picture getPolygon(vector<vector<Point>> contours, int areaIndex, vector<Vec4i> hierarchy, Mat img_src, int thresholdValue);
-Mat getStraightPolygon(Mat img_src, Rect pictureBoundRect, vector<Point> pictureContour);
+Mat getStraightPolygon(Mat img_src, Rect pictureBoundRect, vector<Point> pictureContour, int areaIndex);
 vector<Point> getLargestContour(Mat pictureToCompare);
 void cropPicture(Mat &pictureToCrop, Rect newArea);
 Mat inverseColor(Mat picture);

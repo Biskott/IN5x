@@ -10,15 +10,28 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 
 	// Picture manipulation
 	cvtColor(img_src, img_temp, CV_BGR2GRAY);
+
+	// Do we want black pixels on white background or the opposite ?
 	if (INVERSE_PICTURE)
 		img_temp = inverseColor(img_temp);
+	Mat thresh;
+
 	blur(img_temp, img_temp, Size(3, 3));
-	threshold(img_temp, img_temp, thresholdValue, 255, THRESH_BINARY);
+	// blur(img_temp, img_temp, Size(3, 3));
+
+	threshold(img_temp, img_temp, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+	int dil_size = 2;
+	Mat element = getStructuringElement(MORPH_RECT,
+		Size(2 * dil_size + 1, 2 * dil_size + 1),
+		Point(dil_size, dil_size));
+
+	Mat dil;
+	dilate(img_temp, dil, element);
 
 	// Search for the different polygons in picture
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
-	findContours(img_temp, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	findContours(dil, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	// Select the two biggest area
 	int largestArea = 0, largestAreaIndex = 0, secondLargestArea = 0, secondLargestAreaIndex = 0;
@@ -76,7 +89,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		leftPicture.insideContourNumber = 0;
 	}
 	else {
-		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, img_src, thresholdValue);
+		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, img_temp, thresholdValue);
 		//imshow("left", leftPicture.image);
 	}
 	// Set right picture
@@ -85,7 +98,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		rightPicture.insideContourNumber = 0;
 	}
 	else {
-		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, img_src, thresholdValue);
+		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, img_temp, thresholdValue);
 		//imshow("right", rightPicture.image);
 	}
 }
@@ -108,16 +121,18 @@ Picture getPolygon(vector<vector<Point>> contours, int areaIndex, vector<Vec4i> 
 	cropPicture(img_src, boundRect);
 
 	// Get straight polygon (a biggest picture to not lose parts of original picture)
-	Mat straightPicture = getStraightPolygon(img_src, boundRect, contours[areaIndex]);
-
+	Mat straightPicture = getStraightPolygon(img_src, boundRect, contours[areaIndex], areaIndex);
 	// Picture manipulation on new picture
-	cvtColor(straightPicture, straightPicture, CV_BGR2GRAY);
-	if (INVERSE_PICTURE)
-		straightPicture = inverseColor(straightPicture);
-	blur(straightPicture, straightPicture, Size(3, 3));
+	//cvtColor(straightPicture, straightPicture, CV_BGR2GRAY);
+	//if (INVERSE_PICTURE)
+	//	straightPicture = inverseColor(straightPicture);
+
+
+
+	//blur(straightPicture, straightPicture, Size(3, 3));
 	//threshold(straightPicture, straightPicture, thresholdValue, 255, THRESH_BINARY);
 	// Threshold determined with otsu's method
-	threshold(straightPicture, straightPicture, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+	//threshold(straightPicture, straightPicture, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
 	// Find contour with the new picture
 	vector<vector<Point>> contours_straight;
@@ -166,22 +181,30 @@ Picture getPolygon(vector<vector<Point>> contours, int areaIndex, vector<Vec4i> 
 /*
 * Function to get rotate polygon to have the polygon straight
 */
-Mat getStraightPolygon(Mat img_src, Rect pictureBoundRect, vector<Point> pictureContour) {
+Mat getStraightPolygon(Mat img_src, Rect pictureBoundRect, vector<Point> pictureContour, int areaIndex) {
 
 	int marge = 30;
 	RotatedRect rotRect = minAreaRect(pictureContour);
 	Point2f centerOfPicture = Point2f(pictureBoundRect.width / 2.0F, pictureBoundRect.height / 2.0F);
 	Mat rotMat = getRotationMatrix2D(centerOfPicture, angleConversion(rotRect.angle), 1);
 
-	Scalar backgroundColor = Scalar::all(0);
-	if (INVERSE_PICTURE)
-		backgroundColor = Scalar::all(255);
+	//Scalar backgroundColor = Scalar::all(255);
+	//if (INVERSE_PICTURE)
+		Scalar backgroundColor = Scalar::all(0);
 
 	Mat img_res(img_src.rows + 2 * marge, img_src.cols + 2 * marge, img_src.type(), backgroundColor);
 	img_src.copyTo(img_res(Rect(marge, marge, img_src.cols, img_src.rows)));
 
 	warpAffine(img_res, img_res, rotMat, img_res.size(), INTER_CUBIC);
 
+	//Crop again around number
+	/*vector<vector<Point> > contours;
+	vector<Vec4i> hierarchy;
+	findContours(img_res, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	vector<vector<Point>> contours_poly(contours.size());
+	approxPolyDP(Mat(contours[areaIndex]), contours_poly[areaIndex], 3, true);
+	Rect boundRect = boundingRect(Mat(contours_poly[areaIndex]));
+	cropPicture(img_res, boundRect);*/
 	return img_res;
 }
 

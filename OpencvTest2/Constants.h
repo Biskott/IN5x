@@ -20,7 +20,7 @@ const bool ASK_FOR_TRAINING_DEFAULT = true;
 
 // Constant path
 const string XML_PATH = "xml";
-const string TRAINING_PICTURES_PATH = "TrainingPictures_whiteDisk";
+const string TRAINING_PICTURES_PATH = "TrainingPictures3";
 
 // Constant filename
 const string XML_PERIMETER_FILE_NAME = "perimeters.xml";
@@ -42,7 +42,7 @@ const int SEARCH_AREA_BOTTOM = 65;
 const int KNN_K_PARAMETER = 1;
 
 // Constant to use picture inversion
-const bool INVERSE_PICTURE = true;
+const bool INVERSE_PICTURE = false;
 
 // Constant max value for percentage correspondance in KNN
 const float MAX_KNN_VALUE = 4.6818E+8;
