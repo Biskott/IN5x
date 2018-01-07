@@ -5,3 +5,4 @@
 
 vector<string> getFile(string value);
 vector<string> getFile2();
+vector<string> getFileNb(int max);

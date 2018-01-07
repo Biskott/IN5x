@@ -37,3 +37,16 @@ vector<string> getFile2() {
 	}
 	return file;
 }
+
+vector<string> getFileNb(int max) {
+
+	vector<string> file;
+
+	for (int i = 1; i <= max; ++i) {
+		stringstream ss;
+		ss << i;
+		file.push_back(ss.str() + "_picture.png");
+		cout << file[i - 1] << endl;
+	}
+	return file;
+}

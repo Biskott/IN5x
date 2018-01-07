@@ -44,13 +44,13 @@ int main(int argc, char *argv[])
 	// Main loop
 	cout << "--- Reconnaissance des chiffres ---" << endl;
 
-	vector<string> filenames = getFile2();
+	vector<string> filenames = getFileNb(18);
 	float averagePercentage = -1;
 	int nbErro = 0;
 
 	for (string name : filenames) {
 		float percentage;
-		Mat pictureToFind = imread(("TrainingPictures2\\" + name));
+		Mat pictureToFind = imread(("TrainingPictures3\\" + name));
 		startTime = getMilliCount();
 		int getNumberValue = getNumberInPicture(pictureToFind, percentage);
 		if (getNumberValue == -1) {
