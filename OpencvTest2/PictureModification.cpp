@@ -115,7 +115,9 @@ Picture getPolygon(vector<vector<Point>> contours, int areaIndex, vector<Vec4i> 
 	if (INVERSE_PICTURE)
 		straightPicture = inverseColor(straightPicture);
 	blur(straightPicture, straightPicture, Size(3, 3));
-	threshold(straightPicture, straightPicture, thresholdValue, 255, THRESH_BINARY);
+	//threshold(straightPicture, straightPicture, thresholdValue, 255, THRESH_BINARY);
+	// Threshold determined with otsu's method
+	threshold(straightPicture, straightPicture, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
 	// Find contour with the new picture
 	vector<vector<Point>> contours_straight;
