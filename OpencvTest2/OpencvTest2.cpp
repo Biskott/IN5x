@@ -57,6 +57,19 @@ int main(int argc, char *argv[])
 	}
 	averagePercentage /= filenames.size();
 	cout << "Average percentage detected : " << averagePercentage << endl;
+
+	/*float percentage;
+	Mat pictureToFind = imread(("TrainingPictures3\\14_picture.png"));
+	startTime = getMilliCount();
+	int getNumberValue = getNumberInPicture(pictureToFind, percentage);
+	if (getNumberValue == -1) {
+		cout << "Error in detection" << endl;
+	}
+	else {
+		cout << "Number read with full function : " << getNumberValue << " (" << getMilliSpan(startTime) << " ms)" << endl;
+		if (percentage == -1) averagePercentage = percentage;
+		else averagePercentage += percentage;
+	}*/
 	
 	while(true){} // Temporaire : pour laisser afficher la console
 	return 0;

@@ -12,7 +12,6 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 	cvtColor(img_src, bw, CV_BGR2GRAY);
 
 	// Do we want black pixels on white background or the opposite ?
-
 	Mat thresh;
 	blur(bw, bw, Size(3, 3));
 	threshold(bw, bw, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
@@ -23,25 +22,22 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		bw = inverseColor(bw);
 	}
 
+	// Dilate
 	int dil_size = 3;
-	Mat element = getStructuringElement(MORPH_RECT,
-		Size(2 * dil_size + 1, 2 * dil_size + 1),
-		Point(0, 0));
-
-	Mat close;
-	morphologyEx(bw, close, MORPH_CLOSE, element);
+	Mat element = getStructuringElement(MORPH_RECT, Size(2 * dil_size + 1, 2 * dil_size + 1), Point(0, 0));
 	Mat dil;
 	dilate(bw, dil, element);
-	Mat dil2;
-	Mat element2 = getStructuringElement(MORPH_ELLIPSE,
-		Size(2 * dil_size + 1, 2 * dil_size + 1),
-		Point(0, 0));
+	
+	// Erosion
+	Mat erode1;
+	int erode_size = 1;
+	Mat element3 = getStructuringElement(MORPH_ELLIPSE,	Size(2 * erode_size + 1, 2 * erode_size + 1), Point(0, 0));
+	erode(dil, erode1, element3);
 
-	dilate(dil, dil2, element2);
 	// Search for the different polygons in picture
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
-	findContours(dil2, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	findContours(erode1, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	// Select the two biggest area
 	int largestArea = 0, largestAreaIndex = 0, secondLargestArea = 0, secondLargestAreaIndex = 0;
@@ -99,7 +95,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		leftPicture.insideContourNumber = 0;
 	}
 	else {
-		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, bw, thresholdValue);
+		leftPicture = getPolygon(contours, leftAreaIndex, hierarchy, erode1, thresholdValue);
 		//imshow("left", leftPicture.image);
 	}
 	// Set right picture
@@ -108,7 +104,7 @@ void pictureToPolygons(Mat img_src, Picture &leftPicture, Picture &rightPicture,
 		rightPicture.insideContourNumber = 0;
 	}
 	else {
-		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, bw, thresholdValue);
+		rightPicture = getPolygon(contours, rightAreaIndex, hierarchy, erode1, thresholdValue);
 		//imshow("right", rightPicture.image);
 	}
 }

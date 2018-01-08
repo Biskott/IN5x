@@ -13,42 +13,24 @@ map<int, vector<int>> insideContourTable;
 /*
 * Function to search which is the number (one digit) of the picture
 */
-int applyKNN(Mat pictureToCompare) {
+Point2i applyKNN(Mat pictureToCompare, vector<int> authorizedNumber) {
 
-	Ptr<ml::KNearest> kNearest(ml::KNearest::create());
-	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);
+	Mat training/* = TrainingImagesAsFlattenedFloats*/;
+	Mat classification/* = ClassificationInts*/;
 
-	if (pictureToCompare.empty())
-		return -3;
-
-	Mat pictureFloat;
-	resize(pictureToCompare, pictureToCompare, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));
-	pictureToCompare.convertTo(pictureFloat, CV_32FC1);
-	pictureFloat = pictureFloat.reshape(1, 1);
-
-	Mat currentChar(0, 0, CV_32F);
-
-	kNearest->findNearest(pictureFloat, 1, currentChar);
-
-	float fitCurrentChar = (float)currentChar.at<float>(0, 0);
-
-	return int(fitCurrentChar);
-}
-
-/*
-* Function to search the best match numbers (range) in the picture (one digit)
-*/
-vector<Point2i> KNNRange(Mat pictureToCompare) {
-
-	Mat training = TrainingImagesAsFlattenedFloats;
-	Mat classification = ClassificationInts;
+	for (int i = 0; i < ClassificationInts.rows; ++i) {
+		if (vectorContains(authorizedNumber, ClassificationInts.at<int>(i, 0))) {
+			training.push_back(TrainingImagesAsFlattenedFloats.row(i));
+			classification.push_back(ClassificationInts.at<int>(i, 0));
+		}
+	}
 
 	Ptr<ml::KNearest> kNearest(ml::KNearest::create());
 	kNearest->setDefaultK(KNN_K_PARAMETER);
-	kNearest->train(TrainingImagesAsFlattenedFloats, ml::ROW_SAMPLE, ClassificationInts);
+	kNearest->train(training, ml::ROW_SAMPLE, classification);
 
 	if (pictureToCompare.empty())
-		return vector<Point2i>();
+		return Point2i(-1,-1);
 	
 	Mat pictureFloat;
 	resize(pictureToCompare, pictureToCompare, Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));
@@ -58,27 +40,10 @@ vector<Point2i> KNNRange(Mat pictureToCompare) {
 	Mat nearest(0, 0, CV_32F);
 	Mat dist(0, 0, CV_32F);
 	kNearest->findNearest(pictureFloat, KNN_K_PARAMETER, nearest, noArray(), dist);
-	
-	vector<Point2i> range;
-	for (int i = 0; i < KNN_K_PARAMETER; ++i) {
-		int percent = (MAX_KNN_VALUE - (float)dist.at<float>(0, i)) / MAX_KNN_VALUE * 100;
-		range.push_back(Point2i((float)nearest.at<float>(0, i), percent));
-	}
-	return range;
-}
 
-/*
-* Function to get the best number found
-*/
-Point2i averageNumberFound(vector<Point2i> knnRange, vector<int> authorizedNumber) {
+	int percent = (MAX_KNN_VALUE - (float)dist.at<float>(0, 0)) / MAX_KNN_VALUE * 100;
 
-	for (Point2i knnValue : knnRange) {
-
-		if (vectorContains(authorizedNumber, knnValue.x)) {
-			return knnValue;
-		}
-	}
-	return Point2i(-1,0);
+	return Point2i((float)nearest.at<float>(0, 0), percent);
 }
 
 /*
@@ -99,12 +64,9 @@ int getNumberInPicture(Mat pictureToCompare, float &percentage) {
 	Picture leftPicture, rightPicture;
 	
 	pictureToPolygons(pictureToCompare, leftPicture, rightPicture, THRESHOLD_VALUE);
-	Point2i valueLeft, valueRight;
 	
-	vector<Point2i> knnLeft = KNNRange(leftPicture.image), knnRight = KNNRange(rightPicture.image);
-
-	valueLeft = averageNumberFound(knnLeft, getAuthorizedNumbers(leftPicture.insideContourNumber));
-	valueRight = averageNumberFound(knnRight, getAuthorizedNumbers(rightPicture.insideContourNumber));
+	Point2i valueLeft = applyKNN(leftPicture.image, getAuthorizedNumbers(leftPicture.insideContourNumber)),
+		valueRight = applyKNN(rightPicture.image, getAuthorizedNumbers(rightPicture.insideContourNumber));
 
 	if (valueLeft.x < 0 && valueRight.x < 0) {
 		return -1;
