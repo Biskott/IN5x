@@ -44,33 +44,25 @@ int main(int argc, char *argv[])
 	for (string name : filenames) {
 		float percentage;
 		Mat pictureToFind = imread(("TrainingPictures3\\" + name));
+		destroyAllWindows();
+		imshow("Picture searched", pictureToFind);
+		waitKey();
 		startTime = getMilliCount();
 		int getNumberValue = getNumberInPicture(pictureToFind, percentage);
 		if (getNumberValue == -1) {
 			cout << "Error in detection" << endl;
 		}
 		else {
-			cout << "Number read with full function : " << getNumberValue << " (" << getMilliSpan(startTime) << " ms)" << endl;
+			cout << "Number read with full function : " << getNumberValue << " (" << getMilliSpan(startTime) << " ms)" << endl << endl;
 			if (percentage == -1) averagePercentage = percentage;
 			else averagePercentage += percentage;
 		} 
 	}
+	cout << "--- End of detection ---" << endl;
 	averagePercentage /= filenames.size();
-	cout << "Average percentage detected : " << averagePercentage << endl;
-
-	/*float percentage;
-	Mat pictureToFind = imread(("TrainingPictures3\\14_picture.png"));
-	startTime = getMilliCount();
-	int getNumberValue = getNumberInPicture(pictureToFind, percentage);
-	if (getNumberValue == -1) {
-		cout << "Error in detection" << endl;
-	}
-	else {
-		cout << "Number read with full function : " << getNumberValue << " (" << getMilliSpan(startTime) << " ms)" << endl;
-		if (percentage == -1) averagePercentage = percentage;
-		else averagePercentage += percentage;
-	}*/
-	
-	while(true){} // Temporaire : pour laisser afficher la console
+	cout << endl << "Average percentage detected : " << averagePercentage << "%" << endl;
+	cout << "Number of error during detection : " << nbErro << endl;
+	cout << endl << "Press any key to quit the program." << endl;
+	waitKey();
 	return 0;
 }
